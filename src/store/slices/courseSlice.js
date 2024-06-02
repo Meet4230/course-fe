@@ -52,8 +52,7 @@ export const deleteCourse = createAsyncThunk(
   "courses/deleteCourse",
   async (courseId) => {
     try {
-      const response = await api.delete(`/course/${courseId}`);
-      return response.data;
+      await api.delete(`/course/${courseId}`);
     } catch (error) {
       throw error;
     }
@@ -103,7 +102,7 @@ const courseSlice = createSlice({
         state.status = "succeeded";
         const courseId = action.payload;
         state.courses = state.courses.filter(
-          (course) => course.id !== courseId
+          (course) => course.courseId !== courseId
         );
       });
   },

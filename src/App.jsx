@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./components/Register/Register";
 import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoutes";
 import AddCourse from "./components/AddCourse/AddCourse";
-
 function App() {
   return (
     <>
@@ -12,14 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Register />} />{" "}
           <Route path="/login" element={<Login />} />{" "}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />{" "}
+          <Route path="/dashboard" element={<Dashboard />} />{" "}
           <Route
             path="/add-course"
             element={

@@ -8,8 +8,8 @@ function getGoogleOAuthURL() {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
   const options = {
-    redirect_uri: `http://localhost:8000/api/sessions/oauth/google`,
-    client_id: ` 328249712432-bg3ke8p5b81ut2v7s35hlame10ko48qo.apps.googleusercontent.com`,
+    redirect_uri: `http://localhost:8000/api/v1/users/sessions/oauth/google`,
+    client_id: `328249712432-bg3ke8p5b81ut2v7s35hlame10ko48qo.apps.googleusercontent.com`,
     access_type: "offline",
     response_type: "code",
     prompt: "consent",
@@ -43,7 +43,7 @@ export default function Login() {
       })
       .catch((err) => {
         toast.error(err.message);
-      });
+      }) || navigate(url);
   };
 
   return (
@@ -142,33 +142,8 @@ export default function Login() {
             </div>
             <div className="flex justify-center gap-4">
               <Link to={url}>
-                <button
-                  type="button"
-                  className="group relative w-1/2 flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <span className="sr-only">Sign in with Google</span>
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M24 9.5c3.6 0 6.4 1.2 8.4 3.2l6.2-6.2c-3.7-3.5-8.5-5.6-14.6-5.6C13.3.9 5.3 8.2 3.3 18.1l7.6 5.6c1.1-4.7 5.2-8.2 10.1-8.2"
-                      fill="#EA4335"
-                    />
-                    <path
-                      d="M47.6 20.3H24v7.4h13.5c-1.1 5.5-5.7 8.4-10.2 8.4-3.2 0-5.7-1.1-7.6-3l-6.3 6.3c3.3 3.2 7.8 5.3 13.8 5.3 9.6 0 16.9-6.6 16.9-16.5 0-1-.1-2-.2-2.6"
-                      fill="#34A853"
-                    />
-                    <path
-                      d="M7.9 24c-.3 1.2-.4 2.4-.4 3.6s.1 2.4.4 3.6l7.6-5.6c-.3-.9-.5-1.9-.5-2.9s.2-2.1.5-2.9l-7.6-5.6c-.3 1.2-.4 2.4-.4 3.6s.1 2.4.4 3.6"
-                      fill="#FBBC05"
-                    />
-                    <path
-                      d="M24 47.5c6 0 11.2-2 15.2-5.5l-7.6-6.2c-1.6 1.1-3.6 1.7-5.7 1.7-4.5 0-8.6-2.9-10.2-8.4l-7.6 5.6c2 9.9 10.1 17.2 19.6 17.2"
-                      fill="#4285F4"
-                    />
-                  </svg>
+                <button type="button" className="text-blue-700 underline">
+                  SignIn with Google
                 </button>
               </Link>
             </div>

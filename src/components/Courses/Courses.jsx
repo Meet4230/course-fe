@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { deleteCourse, getCoursesByUser } from "../../store/slices/courseSlice";
+import {
+  deleteCourse,
+  getCoursesByUser,
+  updateCourse,
+} from "../../store/slices/courseSlice";
 import { getUserDetails } from "../../api/user";
-import { getUserId } from "../../store/slices/authSlice";
+
 const Courses = () => {
   const [userId, setUserId] = useState("");
+  const [updatedCourseData, setUpdatedCourseData] = useState({}); // New state to hold updated course data
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.courses.courses) || [];
-  console.log(typeof courses);
   const status = useSelector((state) => state.courses.status);
   const error = useSelector((state) => state.courses.error);
 
@@ -28,20 +32,17 @@ const Courses = () => {
     dispatch(deleteCourse(courseId));
   };
 
+  const handleUpdateCourse = (courseId) => {
+    dispatch(updateCourse({ courseId, updateData: updatedCourseData }));
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUpdatedCourseData({ ...updatedCourseData, [name]: value });
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Courses</h2>
-        <a href="#" className="text-blue-500">
-          View all
-        </a>
-      </div>
-      <div className="grid grid-cols-4 gap-4 mb-4 font-semibold">
-        <div>Course</div>
-        <div>Description</div>
-        <div>Price</div>
-        <div className="text-center">Actions</div>
-      </div>
       <div className="space-y-4">
         {status === "loading" ? (
           <div>Loading...</div>
@@ -64,11 +65,35 @@ const Courses = () => {
               <div className="text-sm text-gray-500">{course.description}</div>
               <div className="font-semibold text-slate-950">{course.price}</div>
               <div className="flex justify-around">
-                <button className="text-blue-500">Edit</button>
-                <button className="text-green-500">Update</button>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Title"
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="description"
+                  placeholder="Description"
+                  onChange={handleChange}
+                />
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="Price"
+                  onChange={handleChange}
+                />
+                {/* Update button */}
+                <button
+                  className="text-green-500"
+                  onClick={() => handleUpdateCourse(course.courseId)}
+                >
+                  Update
+                </button>
+                {/* Delete button */}
                 <button
                   className="text-red-500"
-                  onClick={() => handleDeleteCourse(userId)}
+                  onClick={() => handleDeleteCourse(course.courseId)}
                 >
                   Delete
                 </button>
