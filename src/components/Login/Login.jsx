@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-
+import { loginUser } from "../../api/user";
 export default function Login() {
   const {
     register,
@@ -8,7 +8,14 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await loginUser(data);
+      return response;
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -24,16 +31,16 @@ export default function Login() {
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <label
-                  htmlFor="email-address"
+                  htmlFor="email"
                   className="block text-sm font-medium non-italic py-2 text-gray-700"
                 >
                   Email address
                 </label>
                 <input
-                  id="email-address"
+                  id="email"
                   name="email"
                   type="email"
-                  {...register("emailRequired", { required: true })}
+                  {...register("email", { required: true })}
                   autoComplete="email"
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 />
@@ -50,7 +57,7 @@ export default function Login() {
                   id="password"
                   name="password"
                   type="password"
-                  {...register("passwordRequired", { required: true })}
+                  {...register("password", { required: true })}
                   autoComplete="current-password"
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 />
