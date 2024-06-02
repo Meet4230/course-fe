@@ -1,8 +1,9 @@
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../../api/user";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { adminLogin } from "../../store/slices/authSlice";
 function getGoogleOAuthURL() {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
@@ -24,6 +25,7 @@ function getGoogleOAuthURL() {
 }
 
 export default function Login() {
+  const dispatch = useDispatch();
   const [url, setUrl] = useState(getGoogleOAuthURL());
   const {
     register,
@@ -31,13 +33,17 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    try {
-      const response = await loginUser(data);
-      return response;
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+  const navigate = useNavigate();
+
+  const onSubmit = (data) => {
+    dispatch(adminLogin(data))
+      .unwrap()
+      .then((response) => {
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -49,7 +55,7 @@ export default function Login() {
               Sign in to your account
             </h2>
           </div>
-          <a href={url}>yrdy</a>
+
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm -space-y-px">

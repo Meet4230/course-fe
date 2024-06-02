@@ -6,13 +6,17 @@ import WorkingHours from "../WorkingHours/WorkingHours";
 import Students from "../Students/Students";
 import CompletedTask from "../CompltedTask/CompletedTask";
 import Lessons from "../Lessons/Lessons";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../store/slices/authSlice";
+import { Link } from "react-router-dom";
+
 const Dashboard = () => {
+  const dispatch = useDispatch();
   return (
     <>
       <header className="flex h-16">
         <div className="mx-auto flex w-full items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex flex-1 items-center gap-x-6"></div>
-
           <div className="flex flex-1 items-center justify-end gap-x-8">
             <button
               type="button"
@@ -25,7 +29,7 @@ const Dashboard = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-6"
+                className="h-6 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -54,6 +58,14 @@ const Dashboard = () => {
                 />
               </svg>
             </button>
+            <Link
+              to="/login"
+              onClick={() => dispatch(setLogout())}
+              className="text-gray-700 hover:text-gray-900"
+            >
+              Logout
+            </Link>
+
             <a href="#" className="-m-1.5 p-1.5 flex items-center gap-3">
               <span className="text-end lg:block hidden">
                 <span className="font-semibold block">John Mason</span>
