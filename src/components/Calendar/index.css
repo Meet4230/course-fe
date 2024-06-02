@@ -1,0 +1,35 @@
+.MuiDateCalendar-root {
+  width: 100%;
+}
+
+.MuiPickersCalendarHeader-root {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.MuiPickersCalendarHeader-label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.MuiTypography-caption {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.MuiPickersDay-root.Mui-selected {
+  background-color: orangered;
+  color: #fff;
+}
+
+.MuiDayCalendar-header,
+.MuiDayCalendar-weekContainer {
+  justify-content: space-between;
+}
+
+.MuiPickersDay-dayWithMargin {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+}
