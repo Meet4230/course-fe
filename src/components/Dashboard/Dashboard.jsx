@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 
 import Calendar from "../Calendar/Calendar";
 import Courses from "../Courses/Courses";
@@ -7,11 +8,15 @@ import Students from "../Students/Students";
 import CompletedTask from "../CompltedTask/CompletedTask";
 import Lessons from "../Lessons/Lessons";
 import { useDispatch } from "react-redux";
-import { setLogout } from "../../store/slices/authSlice";
+import { getUserId, setLogout } from "../../store/slices/authSlice";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserId());
+  }, []);
   return (
     <>
       <header className="flex h-16">
@@ -58,6 +63,13 @@ const Dashboard = () => {
                 />
               </svg>
             </button>
+
+            <Link
+              to="/add-course"
+              className="text-gray-700 hover:text-gray-900"
+            >
+              Add Course
+            </Link>
             <Link
               to="/login"
               onClick={() => dispatch(setLogout())}

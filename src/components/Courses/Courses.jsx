@@ -1,41 +1,33 @@
-import React from "react";
-
-const lessons = [
-  {
-    level: "A1",
-    subject: "Common English",
-    description: "Cambridge advanced.pdf",
-    price: "$20",
-    bgColor: "bg-yellow-100",
-    textColor: "text-yellow-600",
-  },
-  {
-    level: "B1",
-    subject: "Speaking club",
-    description: "Speaking skill.docs",
-    price: "$15",
-    bgColor: "bg-blue-100",
-    textColor: "text-blue-600",
-  },
-  {
-    level: "C1",
-    subject: "Business English",
-    description: "English Dictionary.wav",
-    price: "$25",
-    bgColor: "bg-red-100",
-    textColor: "text-red-600",
-  },
-  {
-    level: "A2",
-    subject: "Spanish Grammar",
-    description: "Easy Learning Book.zip",
-    price: "$18",
-    bgColor: "bg-yellow-100",
-    textColor: "text-yellow-600",
-  },
-];
-
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { deleteCourse, getCoursesByUser } from "../../store/slices/courseSlice";
+import { getUserDetails } from "../../api/user";
+import { getUserId } from "../../store/slices/authSlice";
 const Courses = () => {
+  const [userId, setUserId] = useState("");
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.courses.courses) || [];
+  console.log(typeof courses);
+  const status = useSelector((state) => state.courses.status);
+  const error = useSelector((state) => state.courses.error);
+
+  useEffect(() => {
+    getUserDetails().then((data) => {
+      setUserId(data._id);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (status === "idle" && userId) {
+      dispatch(getCoursesByUser(userId));
+    }
+  }, [status, dispatch, userId]);
+
+  const handleDeleteCourse = (courseId) => {
+    dispatch(deleteCourse(courseId));
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -51,30 +43,39 @@ const Courses = () => {
         <div className="text-center">Actions</div>
       </div>
       <div className="space-y-4">
-        {lessons.map((lesson, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-4 gap-4 p-4 bg-white rounded-lg shadow-sm items-center"
-          >
-            <div className="flex items-center">
-              <div
-                className={`w-12 h-12 flex items-center justify-center rounded-lg ${lesson.bgColor}`}
-              >
-                <span className={`text-lg font-bold ${lesson.textColor}`}>
-                  {lesson.level}
-                </span>
+        {status === "loading" ? (
+          <div>Loading...</div>
+        ) : status === "failed" ? (
+          <div>Error: {error}</div>
+        ) : (
+          courses?.map((course, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-4 gap-4 p-4 bg-white rounded-lg shadow-sm items-center"
+            >
+              <div className="flex items-center">
+                <div
+                  className={`w-12 h-12 flex items-center justify-center rounded-lg `}
+                >
+                  <span className={`text-sm font-bold `}>{course.title}</span>
+                </div>
+                <div className="ml-4 font-semibold">{""}</div>
               </div>
-              <div className="ml-4 font-semibold">{lesson.subject}</div>
+              <div className="text-sm text-gray-500">{course.description}</div>
+              <div className="font-semibold text-slate-950">{course.price}</div>
+              <div className="flex justify-around">
+                <button className="text-blue-500">Edit</button>
+                <button className="text-green-500">Update</button>
+                <button
+                  className="text-red-500"
+                  onClick={() => handleDeleteCourse(userId)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">{lesson.description}</div>
-            <div className="font-semibold text-slate-950">{lesson.price}</div>
-            <div className="flex justify-around">
-              <button className="text-blue-500">Edit</button>
-              <button className="text-green-500">Update</button>
-              <button className="text-red-500">Delete</button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

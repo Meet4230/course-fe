@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/user";
-
+import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -11,8 +12,8 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      const result = await registerUser(data);
-      return result;
+      await registerUser(data);
+      navigate("/login", { replace: true });
     } catch (error) {
       console.error("Registration error", error);
     }
@@ -148,6 +149,12 @@ export default function Register() {
             <p className="mt-10 text-center text-sm font-medium text-gray-500">
               Already have an account?{" "}
             </p>
+            <Link
+              className="flex justify-center items-center text-blue-500 underline"
+              to="/login"
+            >
+              SignIn
+            </Link>
           </div>
         </div>
       </div>

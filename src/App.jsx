@@ -3,6 +3,7 @@ import Login from "./components/Login/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./components/Register/Register";
 import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoutes";
+import AddCourse from "./components/AddCourse/AddCourse";
 
 function App() {
   return (
@@ -19,6 +20,14 @@ function App() {
               </ProtectedRoute>
             }
           />{" "}
+          <Route
+            path="/add-course"
+            element={
+              <ProtectedRoute>
+                <AddCourse />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
