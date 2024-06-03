@@ -15,10 +15,12 @@ const Courses = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserById()).then((res) => {
-      console.log(res);
-      setUserId(res?.payload?._id);
-    });
+    dispatch(getUserById())
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        setUserId(res?.payload?._id);
+      });
   }, []);
 
   useEffect(() => {
