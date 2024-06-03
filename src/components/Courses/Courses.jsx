@@ -16,6 +16,7 @@ const Courses = () => {
 
   useEffect(() => {
     dispatch(getUserById()).then((res) => {
+      console.log(res);
       setUserId(res?.payload?._id);
     });
   }, []);
