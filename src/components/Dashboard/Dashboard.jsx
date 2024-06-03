@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 
 import Calendar from "../Calendar/Calendar";
@@ -8,15 +8,20 @@ import Students from "../Students/Students";
 import CompletedTask from "../CompltedTask/CompletedTask";
 import Lessons from "../Lessons/Lessons";
 import { useDispatch } from "react-redux";
-import { getUserId, setLogout } from "../../store/slices/authSlice";
+import { setLogin, getUserById, setLogout } from "../../store/slices/authSlice";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
+  const [user, setUser] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserId());
+    dispatch(getUserById()).then((res) => {
+      console.log(res);
+      setUser(res.payload);
+    });
   }, []);
+
   return (
     <>
       <header className="flex h-16">
@@ -80,9 +85,11 @@ const Dashboard = () => {
 
             <a href="#" className="-m-1.5 p-1.5 flex items-center gap-3">
               <span className="text-end lg:block hidden">
-                <span className="font-semibold block">John Mason</span>
+                <span className="font-semibold block">
+                  {user?.userName || "John Mason"}
+                </span>
                 <span className="font-light text-xs block">
-                  johnmason@gmail.com
+                  {user?.email || "johnmason@gmail.com"}
                 </span>
               </span>
               <img

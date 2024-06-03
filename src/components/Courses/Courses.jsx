@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  deleteCourse,
-  getCoursesByUser,
-  updateCourse,
-} from "../../store/slices/courseSlice";
-import { getUserDetails } from "../../api/user";
+import { deleteCourse, getCoursesByUser } from "../../store/slices/courseSlice";
+import { useNavigate } from "react-router-dom";
+import { getUserById } from "../../store/slices/authSlice";
 
 const Courses = () => {
   const [userId, setUserId] = useState("");
@@ -15,10 +12,11 @@ const Courses = () => {
   const courses = useSelector((state) => state.courses.courses) || [];
   const status = useSelector((state) => state.courses.status);
   const error = useSelector((state) => state.courses.error);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getUserDetails().then((data) => {
-      setUserId(data._id);
+    dispatch(getUserById()).then((res) => {
+      setUserId(res?.payload?._id);
     });
   }, []);
 
@@ -29,11 +27,14 @@ const Courses = () => {
   }, [status, dispatch, userId]);
 
   const handleDeleteCourse = (courseId) => {
+    console.log(courseId);
     dispatch(deleteCourse(courseId));
+    alert("Course Deleted Successfully");
   };
 
   const handleUpdateCourse = (courseId) => {
-    dispatch(updateCourse({ courseId, updateData: updatedCourseData }));
+    console.log(courseId);
+    navigate(`/edit-course/${courseId}`);
   };
 
   const handleChange = (event) => {
@@ -65,35 +66,15 @@ const Courses = () => {
               <div className="text-sm text-gray-500">{course.description}</div>
               <div className="font-semibold text-slate-950">{course.price}</div>
               <div className="flex justify-around">
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Title"
-                  onChange={handleChange}
-                />
-                <input
-                  type="text"
-                  name="description"
-                  placeholder="Description"
-                  onChange={handleChange}
-                />
-                <input
-                  type="number"
-                  name="price"
-                  placeholder="Price"
-                  onChange={handleChange}
-                />
-                {/* Update button */}
                 <button
                   className="text-green-500"
-                  onClick={() => handleUpdateCourse(course.courseId)}
+                  onClick={() => handleUpdateCourse(course._id)}
                 >
                   Update
                 </button>
-                {/* Delete button */}
                 <button
                   className="text-red-500"
-                  onClick={() => handleDeleteCourse(course.courseId)}
+                  onClick={() => handleDeleteCourse(course._id)}
                 >
                   Delete
                 </button>

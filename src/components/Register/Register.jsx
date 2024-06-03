@@ -1,8 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { registerUser } from "../../api/user";
 import { Link, useNavigate } from "react-router-dom";
+import { adminRegister } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 export default function Register() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -11,12 +13,14 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    try {
-      await registerUser(data);
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Registration error", error);
-    }
+    dispatch(adminRegister(data))
+      .unwrap()
+      .then((response) => {
+        navigate("/login", { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { loginUser, getUserDetails } from "../../api/user";
+import api from "../../api";
 
 const initialState = {
   accessToken: null,
@@ -11,25 +11,33 @@ export const adminLogin = createAsyncThunk(
   "adminLogin",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await loginUser(data);
-      return response;
+      const response = await api.post("/users/sessions", data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const adminRegister = createAsyncThunk(
+  "adminRegister",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/users/register", data);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-export const getUserId = createAsyncThunk(
-  "getUserId",
+export const getUserById = createAsyncThunk(
+  "getUserById",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("okk");
       const response = await api.get("/users/me");
-      console.log(response);
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      console.log(error);
     }
   }
 );
@@ -39,7 +47,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setLogin: (state) => {
+      console.log(Cookies.get("accessToken"));
       state.accessToken = Cookies.get("accessToken");
+      console.log(state.accessToken);
     },
     setLogout: (state) => {
       state.accessToken = null;
@@ -51,8 +61,7 @@ const authSlice = createSlice({
       .addCase(adminLogin.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
       })
-      .addCase(getUserId.fulfilled, (state, action) => {
-        console.log(state);
+      .addCase(getUserById.fulfilled, (state, action) => {
         state.data = action.payload;
       });
   },

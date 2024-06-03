@@ -1,12 +1,22 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { getUserById } from "../../store/slices/authSlice";
 
 const ProtectedRoute = ({ children }) => {
-  const token = useSelector((state) => state.auth.accessToken);
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUserById()).then((res) => {
+      console.log(res.payload._id.length);
+      if (res.payload._id.length) {
+        return <Navigate to="/dashboard" />;
+      } else {
+        return <Navigate to="/login" />;
+      }
+    });
+  }, []);
 
   return children;
 };

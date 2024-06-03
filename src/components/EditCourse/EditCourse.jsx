@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createCourse } from "../../store/slices/courseSlice";
-const AddCourse = () => {
-  const navigate = useNavigate();
+import { getCourseById, updateCourse } from "../../store/slices/courseSlice";
+const EditCourse = () => {
+  const params = useParams();
+  const courseId = params.id;
   const dispatch = useDispatch();
+  const [courseData, setCourseData] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getCourseById(courseId)).then((data) => {
+      setCourseData(data.payload);
+    });
+  }, [courseId]);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: courseData,
+  });
 
   const onSubmit = async (data) => {
-    dispatch(createCourse(data));
-    alert("Course added successfully");
-    reset();
+    dispatch(updateCourse(data));
+    alert("Data Updated Successfully");
     navigate("/dashboard");
   };
   return (
@@ -97,4 +107,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default EditCourse;

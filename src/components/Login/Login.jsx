@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
-import { loginUser } from "../../api/user";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../store/slices/authSlice";
@@ -42,8 +41,8 @@ export default function Login() {
         navigate("/dashboard", { replace: true });
       })
       .catch((err) => {
-        toast.error(err.message);
-      }) || navigate(url);
+        console.log(err);
+      });
   };
 
   return (
