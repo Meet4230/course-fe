@@ -6,8 +6,11 @@ import { adminLogin } from "../../store/slices/authSlice";
 function getGoogleOAuthURL() {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
-  const clientId = import.meta.env.VITE_API_GOOGLE_CLIENT_ID;
-  const redirectUri = import.meta.env.VITE_API_GOOGLE_REDIRECT_URI;
+  const clientId =
+    "328249712432-bg3ke8p5b81ut2v7s35hlame10ko48qo.apps.googleusercontent.com";
+
+  const redirectUri =
+    "https://course-be-r7is.onrender.com/api/v1/users/sessions/oauth/google";
   const options = {
     redirect_uri: redirectUri,
     client_id: clientId,
