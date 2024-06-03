@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getUserById()).then((res) => {
-      console.log(res);
       setUser(res.payload);
     });
   }, []);
