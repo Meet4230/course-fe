@@ -18,7 +18,6 @@ const Courses = () => {
     dispatch(getUserById())
       .unwrap()
       .then((res) => {
-        console.log(res);
         setUserId(res?.payload?._id);
       });
   }, []);
@@ -30,13 +29,11 @@ const Courses = () => {
   }, [status, dispatch, userId]);
 
   const handleDeleteCourse = (courseId) => {
-    console.log(courseId);
     dispatch(deleteCourse(courseId));
     alert("Course Deleted Successfully");
   };
 
   const handleUpdateCourse = (courseId) => {
-    console.log(courseId);
     navigate(`/edit-course/${courseId}`);
   };
 

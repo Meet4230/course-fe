@@ -108,7 +108,10 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                 <div>
                   <h3 className="text-3xl mb-4">
-                    Welcome back, <span className="font-semibold">John!</span>
+                    Welcome back,{" "}
+                    <span className="font-semibold">
+                      {user?.userName || "John Mason"}
+                    </span>
                   </h3>
                   <p className="text-slate-400">
                     Your students completed{" "}

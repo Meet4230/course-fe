@@ -9,7 +9,6 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     dispatch(getUserById()).then((res) => {
-      console.log(res.payload._id.length);
       if (res.payload._id.length) {
         return <Navigate to="/dashboard" />;
       } else {
