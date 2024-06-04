@@ -124,7 +124,7 @@ const Dashboard = () => {
                 <div>
                   <img
                     className="w-full"
-                    src="src/assets/students.jpg"
+                    src="src\assets\students.jpg"
                     alt="Students"
                   />
                 </div>
