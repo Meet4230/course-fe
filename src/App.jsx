@@ -5,6 +5,8 @@ import Register from "./components/Register/Register";
 import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoutes";
 import AddCourse from "./components/AddCourse/AddCourse";
 import EditCourse from "./components/EditCourse/EditCourse";
+import SetCookies from "./utils/SetCookies";
+
 function App() {
   return (
     <>
@@ -12,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Register />} />{" "}
           <Route path="/login" element={<Login />} />{" "}
+          <Route path="/set-cookies" element={<SetCookies />} />{" "}
           <Route
             path="/dashboard"
             element={
